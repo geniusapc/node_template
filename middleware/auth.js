@@ -4,7 +4,7 @@ const { JWT_KEY } = require('../config/keys');
 const User = require('../models/User');
 
 
-/* eslint consistent-return: "off" */
+// /* eslint consistent-return: "off" */
 module.exports.loginAuth = async (req, res, next) => {
   const token = req.header('x-auth-token');
 
@@ -15,7 +15,6 @@ module.exports.loginAuth = async (req, res, next) => {
 
     const user = await User.findById(decoded._id).select([
       'roles',
-      'cooperativeId',
       'permission',
     ]);
 
