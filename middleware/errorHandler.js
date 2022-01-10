@@ -1,22 +1,23 @@
-/* eslint no-unused-vars:"off", no-param-reassign:"off" */
-const logger = require('../startup/logger');
+/* eslint no-unused-vars:"off" */
+const logger = require('../config/logger');
 const { errorResponse } = require('../utils/response');
 
 module.exports = (err, req, res, next) => {
+  const error = err
   switch (err.name) {
     case 'Error':
-      err.status = err.status || 400;
+      error.status = err.status || 400;
       break;
     case 'MongoError':
-      err.status = 400;
+      error.status = 400;
       break;
     case 'ValidationError':
-      err.status = 422;
-      err.message = err.message.split(':')[2] || err.details[0].message; // Mongo and Joi validator
+      error.status = 422;
+      error.message = err.message.split(':')[2] || err.details[0].message; // Mongo and Joi validator
       break;
     default:
       logger.error(err);
-      err.status = 500;
+      error.status = 500;
   }
 
   return errorResponse(res, err.status, err.message, err.type);

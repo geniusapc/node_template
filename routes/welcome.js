@@ -1,9 +1,9 @@
 require('express-async-errors');
 const router = require('express').Router();
 
-router.get('/', (req, res) => {
-  return res.send('Hello');
-})
+const welcome = require("../controller/welcome/welcome")
+
+router.get('/', welcome)
 
 
 module.exports = router;

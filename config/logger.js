@@ -1,14 +1,10 @@
-/* eslint no-shadow:"off" */
 const winston = require('winston');
-require('winston-mongodb');
-const { MONGODB_URI } = require('../config/keys');
 
 const { createLogger, format, transports } = winston;
-
 const { combine, timestamp, printf } = format;
 
-const myFormat = printf(({ level, message, timestamp }) => {
-  return `${timestamp}  ${level}: ${message}`;
+const myFormat = printf(({ level, message, timestamp: time }) => {
+  return `${time}  ${level}: ${message}`;
 });
 
 const logger = createLogger({
@@ -24,11 +20,18 @@ const logger = createLogger({
   exceptionHandlers: [
     new transports.File({ filename: './logs/exceptions.log' }),
     new transports.Console(),
-    new transports.MongoDB({
-      db: MONGODB_URI,
-      options: { useUnifiedTopology: true },
-    }),
+
   ],
 });
+
+
+
+// logging to db
+// require('winston-mongodb');
+// const { MONGODB_URI } = require('../config/keys');
+    // new transports.MongoDB({
+    //   db: MONGODB_URI,
+    //   options: { useUnifiedTopology: true },
+    // }),
 
 module.exports = logger;

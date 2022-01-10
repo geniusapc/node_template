@@ -1,4 +1,4 @@
-module.exports.response = (res, next, statusCode, result, message) => {
+module.exports.response = (res, next, statusCode, result, message=null) => {
   if (result instanceof Error) {
     return next(result);
   }
